@@ -12,6 +12,8 @@
 		27EF852C1BA0C545007D4341 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27EF852A1BA0C545007D4341 /* MainMenu.xib */; };
 		27EF85371BA0C546007D4341 /* MusicBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EF85361BA0C546007D4341 /* MusicBarTests.swift */; };
 		27EF85421BA0C546007D4341 /* MusicBarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EF85411BA0C546007D4341 /* MusicBarUITests.swift */; };
+		27EF85501BA0C635007D4341 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27EF854F1BA0C635007D4341 /* Foundation.framework */; };
+		27EF85561BA0D375007D4341 /* SwiftShell.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27EF85551BA0D375007D4341 /* SwiftShell.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +45,8 @@
 		27EF853D1BA0C546007D4341 /* MusicBarUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MusicBarUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		27EF85411BA0C546007D4341 /* MusicBarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicBarUITests.swift; sourceTree = "<group>"; };
 		27EF85431BA0C546007D4341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		27EF854F1BA0C635007D4341 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		27EF85551BA0D375007D4341 /* SwiftShell.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftShell.framework; path = ../../../Library/Frameworks/SwiftShell.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +54,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27EF85561BA0D375007D4341 /* SwiftShell.framework in Frameworks */,
+				27EF85501BA0C635007D4341 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +79,8 @@
 		27EF851A1BA0C545007D4341 = {
 			isa = PBXGroup;
 			children = (
+				27EF85551BA0D375007D4341 /* SwiftShell.framework */,
+				27EF854F1BA0C635007D4341 /* Foundation.framework */,
 				27EF85251BA0C545007D4341 /* MusicBar */,
 				27EF85351BA0C546007D4341 /* MusicBarTests */,
 				27EF85401BA0C546007D4341 /* MusicBarUITests */,
@@ -181,6 +189,7 @@
 		27EF851B1BA0C545007D4341 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = C453;
 				TargetAttributes = {
@@ -379,11 +388,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Frameworks",
+				);
 				INFOPLIST_FILE = MusicBar/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.C453.MusicBar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -391,11 +408,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Frameworks",
+				);
 				INFOPLIST_FILE = MusicBar/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.C453.MusicBar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;
 		};
