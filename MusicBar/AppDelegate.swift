@@ -14,19 +14,15 @@ import SwiftShell
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
-    let statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
-    var StatusBar:NSStatusItem!;
-    var State:String!;
+    let StatusBar = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
+    var State:String!
+    var menu = NSMenu()
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         backgroundTask()
+        StatusBar.button!.image = NSImage(named: "media_pause")
+        StatusBar.button!.action = Selector("playPause:")
         
-        StatusBar = statusItem
-        
-        StatusBar.image = NSImage(named: "media_pause")
-        StatusBar.action = Selector("playPause:")
-        
-        let menu = NSMenu()
         menu.addItem(NSMenuItem(title: "Quit", action: Selector("terminate:"), keyEquivalent: "Q"))
     }
 
@@ -67,40 +63,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             run("osascript -e 'Tell application \"iTunes\" to play'")
         }
     }
-    
-    func runCommand(cmd : String, args : String...) -> (output: [String], error: [String], exitCode: Int32) {
-        
-        var output : [String] = []
-        var error : [String] = []
-        
-        let task = NSTask()
-        task.launchPath = cmd
-        task.arguments = args
-        
-        let outpipe = NSPipe()
-        task.standardOutput = outpipe
-        let errpipe = NSPipe()
-        task.standardError = errpipe
-        
-        task.launch()
-        
-        let outdata = outpipe.fileHandleForReading.readDataToEndOfFile()
-        if var string = String.fromCString(UnsafePointer(outdata.bytes)) {
-            string = string.stringByTrimmingCharactersInSet(NSCharacterSet.newlineCharacterSet())
-            output = string.componentsSeparatedByString("\n")
-        }
-        
-        let errdata = errpipe.fileHandleForReading.readDataToEndOfFile()
-        if var string = String.fromCString(UnsafePointer(errdata.bytes)) {
-            string = string.stringByTrimmingCharactersInSet(NSCharacterSet.newlineCharacterSet())
-            error = string.componentsSeparatedByString("\n")
-        }
-        
-        task.waitUntilExit()
-        let status = task.terminationStatus
-        
-        return (output, error, status)
-    }
-
 }
-
