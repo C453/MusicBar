@@ -5,62 +5,57 @@
 //  Created by Case Wright on 9/9/15.
 //  Copyright © 2015 C453. All rights reserved.
 //
-
 import Cocoa
 import Foundation
-import SwiftShell
+import ScriptingBridge
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-
-    @IBOutlet weak var window: NSWindow!
-    let StatusBar = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
-    var State:String!
+    
+    @IBOutlet weak
+    var window: NSWindow!
+    let statusBar = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
+    let pauseImage = NSImage(named: "media_pause")
+    let playImage = NSImage(named: "media_play")
+    var iTunes: iTunesApplication = SBApplication(bundleIdentifier: "com.apple.iTunes")!
     var menu = NSMenu()
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        backgroundTask()
-        StatusBar.button!.image = NSImage(named: "media_pause")
-        StatusBar.button!.action = Selector("playPause:")
+        let thread = NSThread(target: self, selector: "backgroundLoop", object: nil)
+        thread.start()
+        statusBar.button!.image = playImage
+        statusBar.button!.action = Selector("playPause:")
         
         menu.addItem(NSMenuItem(title: "Quit", action: Selector("terminate:"), keyEquivalent: "Q"))
     }
-
+    
     func applicationWillTerminate(aNotification: NSNotification) {
         // Insert code here to tear down your application
     }
-
-    func backgroundTask() {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), { () -> Void in
-            while(true) {
-            self.State = self.getItunesStatus()
-            
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                
-                switch(self.State) {
-                    case "playing\n":
-                        self.StatusBar.image = NSImage(named: "media_pause")
-                    break
-                default:
-                    self.StatusBar.image = NSImage(named: "media_play")
-                    break
-                }
-            })
-            }
-        })
-    }
     
-    func getItunesStatus() -> String {
-       let output = run("osascript -e 'Tell application \"iTunes\" to player state'").read()
-        return output
+    func backgroundLoop() {
+        
+        var image: NSImage!
+        
+        while true {
+            usleep(100000) //0.1 Seconds
+            if self.iTunes.playerState! == iTunesEPlSPlaying {
+                self.statusBar.button!.image = pauseImage
+                image = pauseImage
+            } else {
+                self.statusBar.button!.image = playImage
+                image = playImage
+            }
+            
+            guard image != self.statusBar.button!.image else { continue }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.statusBar.button!.image = image
+            }
+        }
     }
     
     func playPause(sender: AnyObject) {
-        if(self.State == "playing\n") {
-            run("osascript -e 'Tell application \"iTunes\" to pause'")
-        }
-        else {
-            run("osascript -e 'Tell application \"iTunes\" to play'")
-        }
+        iTunes.playpause!()
     }
 }
