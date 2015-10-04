@@ -39,6 +39,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         while true {
             usleep(100000) //0.1 Seconds
+            
+            guard iTunesOpen() else {
+                continue
+            }
+            
             if self.iTunes.playerState! == iTunesEPlSPlaying {
                 self.statusBar.button!.image = pauseImage
                 image = pauseImage
@@ -57,5 +62,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func playPause(sender: AnyObject) {
         iTunes.playpause!()
+    }
+    
+    func iTunesOpen() -> Bool {
+        return (SBApplication(bundleIdentifier: "com.apple.iTunes")?.running)!
     }
 }
